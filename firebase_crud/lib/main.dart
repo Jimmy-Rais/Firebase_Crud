@@ -1,17 +1,23 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 String description = "";
-void main() => runApp(MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.lightBlue[800],
-        accentColor: Colors.cyan[600],
-      ),
-      home: MyApp(),
-    ));
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    theme: ThemeData(
+      brightness: Brightness.dark,
+      primaryColor: Colors.lightBlue[800],
+      accentColor: Colors.cyan[600],
+    ),
+    home: MyApp(),
+  ));
+}
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -99,7 +105,7 @@ class _MyAppState extends State<MyApp> {
                     color: Colors.blue,
                     child: TextButton(
                       onPressed: () {
-                        createData();
+                        createUser(name: name);
                       },
                       child: Text(
                         "Create",
@@ -158,4 +164,15 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+}
+
+Future createUser({required String name}) async {
+  //Reference to document
+  final docUser = FirebaseFirestore.instance.collection('Users').doc('my_id');
+  final json = {
+    'name': name,
+    'description': description,
+  };
+  //Create document and write data to the database
+  await docUser.set(json);
 }
