@@ -95,83 +95,92 @@ class _MyAppState extends State<MyApp> {
           ),
           SizedBox(height: 15),
           Padding(
-            padding: const EdgeInsets.only(left: 25.0),
-            child: Row(
-              textDirection: TextDirection.ltr,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 25.0),
-                  child: Container(
-                    color: Colors.blue,
-                    child: TextButton(
-                      onPressed: () {
-                        createUser(name: name);
-                      },
-                      child: Text(
-                        "Create",
-                        style: TextStyle(color: Colors.white),
+              padding: const EdgeInsets.only(left: 25.0),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  textDirection: TextDirection.ltr,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 25.0),
+                      child: Container(
+                        color: Colors.blue,
+                        child: TextButton(
+                          onPressed: () {
+                            createUser(
+                                name: name,
+                                description: description,
+                                price: price);
+                          },
+                          child: Text(
+                            "Create",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 25.0),
-                  child: Container(
-                    color: Color.fromARGB(234, 243, 247, 8),
-                    child: TextButton(
-                      onPressed: () {
-                        readData();
-                      },
-                      child: Text(
-                        "Read",
-                        style: TextStyle(color: Colors.white),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 25.0),
+                      child: Container(
+                        color: Color.fromARGB(234, 243, 247, 8),
+                        child: TextButton(
+                          onPressed: () {
+                            readData();
+                          },
+                          child: Text(
+                            "Read",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 25.0),
+                      child: Container(
+                        color: Colors.green,
+                        child: TextButton(
+                            onPressed: () {
+                              updateData();
+                            },
+                            child: Text(
+                              "Update",
+                              style: TextStyle(color: Colors.white),
+                            )),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 25.0),
+                      child: Container(
+                        color: Colors.pink,
+                        child: TextButton(
+                            onPressed: () {
+                              deleteData();
+                            },
+                            child: Text(
+                              "Delete",
+                              style: TextStyle(color: Colors.white),
+                            )),
+                      ),
+                    )
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 25.0),
-                  child: Container(
-                    color: Colors.green,
-                    child: TextButton(
-                        onPressed: () {
-                          updateData();
-                        },
-                        child: Text(
-                          "Update",
-                          style: TextStyle(color: Colors.white),
-                        )),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 25.0),
-                  child: Container(
-                    color: Colors.pink,
-                    child: TextButton(
-                        onPressed: () {
-                          deleteData();
-                        },
-                        child: Text(
-                          "Delete",
-                          style: TextStyle(color: Colors.white),
-                        )),
-                  ),
-                )
-              ],
-            ),
-          )
+              ))
         ],
       ),
     );
   }
 }
 
-Future createUser({required String name}) async {
+Future createUser(
+    {required String name,
+    required String description,
+    required double price}) async {
   //Reference to document
-  final docUser = FirebaseFirestore.instance.collection('Users').doc('my_id');
+  final docUser = FirebaseFirestore.instance.collection('Users').doc();
   final json = {
     'name': name,
     'description': description,
+    'price': price,
   };
   //Create document and write data to the database
   await docUser.set(json);
