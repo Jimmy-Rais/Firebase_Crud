@@ -41,7 +41,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   getPrice(price) {
-    this.price = double.parse(price);
+    this.price = double.
+    
+    
+    
+    parse(price);
     print(this.price);
   }
 
